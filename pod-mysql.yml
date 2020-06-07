@@ -1,0 +1,39 @@
+--- 
+apiVersion: v1
+kind: Pod
+metadata: 
+  labels: 
+    env: testing
+    region: IN
+  name: dbpod1
+spec: 
+  containers: 
+    - image: "mysql:5.7"
+      name: dbcon1
+      env: 
+        - 
+          name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+               name: mysecure
+               key: rootpass
+        - 
+          name: MYSQL_USER
+          value: palak
+        - 
+          name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysecure
+              key: userpass
+        - 
+          name: MYSQL_DATABASE
+          value: mydb
+      volumeMounts:
+      - name: db-vol1
+        mountPath: /var/lib/mysql
+  volumes:
+  - name: db-vol1
+    persistentVolumeClaim:
+      claimName: db-pvc1
+      

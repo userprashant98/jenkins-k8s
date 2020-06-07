@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myweb-deploy
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+       env: production
+
+  template:
+    metadata:
+     name: myweb-pod 
+     labels:
+       env: production
+    spec:
+      containers:
+      - name: myweb-con
+        image: vimal13/prometheus
+        volumeMounts:
+          - name: web-vol1
+            mountPath: /etc/config/prometheus.yml
+      volumes:
+      - name: web-vol1
+        persistentVolumeClaim:
+          claimName: web-pvc1
+
+
